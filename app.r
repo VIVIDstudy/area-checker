@@ -3,7 +3,7 @@ library(shiny)
 library(bslib)
 library(leaflet)
 
-# Define UI for application that draws a histogram
+# Define UI
 ui <- page_fluid(
 
   tags$head(
@@ -53,30 +53,31 @@ $(function() {
     )
   ),
 
-  # Application title
-  titlePanel("VIVID study inclusion checker"),
+
+  titlePanel("VIVID study area checker - NOT YET ACTIVE"),
 
   verticalLayout(
-    p("The University of Sheffield is running the VIVID study. The study will",
-      "investigate how certain respiratory viruses affect different groups of",
-      "people. We will look at groups of people with and without a variety of",
-      "clinical vulnerabilities. To do this, we will use data collected in the",
-      "course of routine patient care. You can find out more about the study",
+    p("The University of Sheffield is running the VIVID study. We aim to figure",
+      "out which groups of people are at higher risk from viruses that affect",
+      "breathing. This will help decide who should get new vaccines and",
+      "treatments."),
+    p("To do this, we will use data collected in the course of routine patient",
+      "care. You can find out more about the study",
       "at:",
       a("www.vivid-study.co.uk",
         href="https://www.vivid-study.co.uk",
         target="_blank")),
-    p("Our data providers are NHS England and the UK Health Security Agency.",
-      "They will process confidential patient information for the VIVID study.",
-      "They will de-identify the data before providing it to the VIVID study",
-      "research team. The research team will only have access to de-identified",
-      "data, so we won’t know whose records we’re looking at."),
-    p(strong("Your records may be included in the VIVID study if you were",
-             "registered with the NHS in some areas of England. These areas",
-             "are indicated on the map below. You would only be included if",
-             "you lived in these areas between April 2021 and March 2026.")),
-    p("If you have a NHS national data opt-out, your records will not be",
-      "included in the VIVID study."),
+    p("The research team will only have access to de-identified data, so we",
+      "won't know whose records we're looking at. But NHS England and the UK",
+      "Health Security Agency will process confidential patient information",
+      "on our behalf."),
+    p(strong("Your records would only be included in the study if you were",
+             "registered with the NHS as living in some areas of England. And",
+             "only if this was between 1st April 2021 and 31st March 2026. The",
+             "areas included are indicated on the map below.")),
+    p("If you have already used the",
+      strong("NHS National Data Opt-Out", .noWS = "after"),
+      ", your records will not be included in this study."),
     p("You can check to see if your records might be included by entering your",
       "postcode in the search box below. Remember to check all postcodes at",
       "which you lived during this time."),
@@ -107,8 +108,8 @@ $(function() {
       "non-essential cookies."),
     tagAppendAttributes(
       p("This app uses the Gridlink NHS Postcode Directory and digital boundary",
-        "data from the Office for National Statistics licensed under the Open",
-        "Government Licence:"
+        "data. This data comes from the Office for National Statistics. It is",
+        "licensed under the Open Government Licence v3."
       ),
       class = "font-small"),
     tagAppendAttributes(
@@ -121,6 +122,7 @@ $(function() {
   )
 )
 
+# Define server-side processing
 server <- function(input, output, session) {
 
   result_coords <- NA
@@ -138,11 +140,6 @@ server <- function(input, output, session) {
       setView(lng = -1.4649, lat = 52.5619, zoom = 6)
   })
 
-  # See pattern @ https://shiny.posit.co/r/reference/shiny/1.2.0/observeevent.html
-  #   clean_postcode <- eventReactive(input$submit,{
-  #     input$submit
-  #   },
-  #   ignoreInit = TRUE)
 
   observeEvent(input$submit, {
     output$outcome <- NULL
@@ -185,11 +182,16 @@ server <- function(input, output, session) {
                               "in the study area.")
         } else {
           result_catchment = as.logical(NA)
-          result_text = paste0("We can't find the precise postcode submitted: ", pc_output, "<br />",
-                               "The submitted postcode district (",
+          result_text = paste0("We can't find the precise postcode: ", pc_output,
+                               "<br />",
+                               "The postcode district (",
                                strong(pc_district),
-                               ") contains some postcodes included in the study.<br />",
-                               "Please check the map to be sure.")
+                               ") contains some postcodes included in the study.",
+                               "<br />",
+                               "Please check the map or you can email us at ",
+                               "<a href=\"mailto:vivid-optout@sheffield.ac.uk\"",
+                               " target=\"_blank\">",
+                               "vivid-optout@sheffield.ac.uk</a>.")
         }
 
         if(is.na(pc_district_details$longitude)) {
@@ -249,5 +251,4 @@ server <- function(input, output, session) {
   })
 }
 
-# Run the application
 shinyApp(ui = ui, server = server)
