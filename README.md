@@ -1,4 +1,4 @@
-# VIVID postcode checker
+# VIVID study area checker
 
 A R Shiny app for checking whether a postcode is amongst the areas for which
 people registered with the NHS (at any time between April 2001 and March 2026)
