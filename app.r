@@ -57,13 +57,12 @@ $(function() {
   titlePanel("VIVID study area checker - NOT YET ACTIVE"),
 
   verticalLayout(
-    p("The University of Sheffield is running the VIVID study. We aim to figure",
-      "out which groups of people are at higher risk from viruses that affect",
+    p("The University of Sheffield is running the VIVID study. We aim to work",
+      "out which groups of people are more at risk from viruses that affect",
       "breathing. This will help decide who should get new vaccines and",
       "treatments."),
-    p("To do this, we will use data collected in the course of routine patient",
-      "care. You can find out more about the study",
-      "at:",
+    p("To do this, we use health information that the NHS already collects.",
+      "You can find out more about the study at:",
       a("www.vivid-study.co.uk",
         href="https://www.vivid-study.co.uk",
         target="_blank")),
