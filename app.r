@@ -54,38 +54,40 @@ $(function() {
   ),
 
 
-  titlePanel("VIVID study area checker - NOT YET ACTIVE"),
+  titlePanel("VIVID study area checker: planned areas"),
 
   verticalLayout(
     p("The University of Sheffield is running the VIVID study. We aim to work",
       "out which groups of people are more at risk from viruses that affect",
       "breathing. This will help decide who should get new vaccines and",
       "treatments."),
-    p("To do this, we use health information that the NHS already collects.",
+    p("To do this, we will use health information that the NHS already collects.",
       "You can find out more about the study at:",
       a("www.vivid-study.co.uk",
         href="https://www.vivid-study.co.uk",
         target="_blank")),
-    p("The research team will only have access to de-identified data, so we",
-      "won't know whose records we're looking at. But NHS England and the UK",
-      "Health Security Agency will process confidential patient information",
-      "on our behalf."),
-    p(strong("Your records would only be included in the study if you were",
+    p("The research team will only have access to de-identified data. This",
+      "means personal details - like names and addresses - have been removed.",
+      "But NHS England and the UK Health Security Agency will process",
+      "confidential patient information on our behalf."),
+    p(strong("Your records would only be included if you were",
              "registered with the NHS as living in some areas of England. And",
              "only if this was between 1st April 2021 and 31st March 2026. The",
-             "areas included are indicated on the map below.")),
+             "areas we plan to include are indicated on the map below.")),
+    p("You can check to see if you live in one of the areas we plan to include by entering your",
+      "postcode in the search box below. Remember to check all postcodes at",
+      "which you lived during this time."),
     p("If you have already used the",
       strong("NHS National Data Opt-Out", .noWS = "after"),
       ", your records will not be included in this study."),
-    p("You can check to see if your records might be included by entering your",
-      "postcode in the search box below. Remember to check all postcodes at",
-      "which you lived during this time."),
-    p("If you think your records might be included and you don't want your",
-      "records to be used in the VIVID study, you can opt out. See the study",
-      "website for details on opting out:",
-      a("www.vivid-study.co.uk",
-        href="https://www.vivid-study.co.uk",
-        target="_blank")),
+    p("If you think your records might be included and you don't want",
+      "them to be used in the VIVID study, you will be able to opt out.",
+      "We will update this page with the confirmed areas included in",
+      "the study once these are decided."),
+      # "See the study website for details on opting out:",
+      # a("www.vivid-study.co.uk",
+      #   href="https://www.vivid-study.co.uk",
+      #   target="_blank")),
 
     tagAppendAttributes(
       textInput("postcode",
@@ -99,7 +101,7 @@ $(function() {
       label = "Submit"),
     htmlOutput("outcome"),
     tagAppendAttributes(
-      div("In the map the purple overlay indicates areas in the study."),
+      div("In the map the purple overlay indicates the areas we plan to include in the study."),
       class = "map-legend"),
     leafletOutput("map",
                   height = 600),
@@ -178,14 +180,14 @@ server <- function(input, output, session) {
                               strong(pc_output),
                               "is",
                               strong("not"),
-                              "in the study area.")
+                              "in the planned study areas.")
         } else {
           result_catchment = as.logical(NA)
           result_text = paste0("We can't find the precise postcode: ", pc_output,
                                "<br />",
                                "The postcode district (",
                                strong(pc_district),
-                               ") contains some postcodes included in the study.",
+                               ") contains some postcodes in a planned study areas.",
                                "<br />",
                                "Please check the map or you can email us at ",
                                "<a href=\"mailto:vivid-optout@sheffield.ac.uk\"",
@@ -207,12 +209,12 @@ server <- function(input, output, session) {
                               strong(pc_output),
                               "is",
                               strong("not"),
-                              "in the study area.")
+                              "in the planned study areas.")
         } else {
           result_catchment = TRUE
           result_text = paste("The postcode",
                               strong(pc_output),
-                              "is in the study area.")
+                              "is in a planned study area.")
         }
 
         if(!is.na(pc_details$longitude)) {
